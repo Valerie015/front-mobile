@@ -297,24 +297,6 @@ export default function ProfileScreen() {
             {t("profile.settings")}
           </Text>
 
-          {/* Preferences */}
-          {/* <Card
-            style={[styles.settingCard, { backgroundColor: colors.surface }]}
-          >
-            <TouchableOpacity
-              style={styles.settingRow}
-              onPress={() => setShowPreferences(true)}
-            >
-              <View style={styles.settingIconContainer}>
-                <Settings size={22} color={colors.primary} />
-              </View>
-              <Text style={[styles.settingText, { color: colors.text }]}>
-                {t("profile.preferences")}
-              </Text>
-              <ChevronRight size={18} color={colors.text} />
-            </TouchableOpacity>
-          </Card> */}
-
           {/* Theme Toggle */}
           <Card
             style={[styles.settingCard, { backgroundColor: colors.surface }]}
@@ -422,24 +404,6 @@ export default function ProfileScreen() {
             )}
           </Card>
 
-          {/* Notifications */}
-          {/* <Card
-            style={[styles.settingCard, { backgroundColor: colors.surface }]}
-          >
-            <TouchableOpacity
-              style={styles.settingRow}
-              onPress={() => router.push("/home/notifications")}
-            >
-              <View style={styles.settingIconContainer}>
-                <Bell size={22} color={colors.primary} />
-              </View>
-              <Text style={[styles.settingText, { color: colors.text }]}>
-                {t("profile.notifications")}
-              </Text>
-              <ChevronRight size={18} color={colors.text} />
-            </TouchableOpacity>
-          </Card> */}
-
           {/* Routes List */}
           <Card
             style={[styles.settingCard, { backgroundColor: colors.surface }]}
@@ -477,15 +441,6 @@ export default function ProfileScreen() {
         user={userProfile || authUser}
         onRefresh={refetchProfile}
       />
-
-      {/* User Preferences Bottom Sheet */}
-      {/* <UserPreferencesSheet
-        visible={showPreferences}
-        onClose={() => setShowPreferences(false)}
-        userId={userProfile?.id || 0}
-        preferences={null} // Vous devrez récupérer les préférences utilisateur depuis l'API
-        onRefresh={refetchProfile}
-      /> */}
     </>
   );
 }
