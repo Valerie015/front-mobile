@@ -175,7 +175,7 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     // Utiliser l'adresse IP correcte au lieu de localhost
-    baseUrl: "http://192.168.1.29",
+    baseUrl: "http://192.168.1.34",
     prepareHeaders: (headers, { getState }) => {
       // Ajouter seulement les en-têtes essentiels
       headers.set("Content-Type", "application/json")
@@ -189,30 +189,6 @@ export const api = createApi({
 
       return headers
     },
-    // fetchFn: async (...args) => {
-    //   // Log request for debugging
-    //   console.log("RTK Query Request:", args)
-
-    //   try {
-    //     const response = await fetch(...args)
-    //     // Log response for debugging
-    //     console.log("RTK Query Response:", response.status, response.statusText)
-
-    //     // Clone the response to log the body
-    //     const clonedResponse = response.clone()
-    //     try {
-    //       const responseData = await clonedResponse.text()
-    //       console.log("RTK Query Response Data:", responseData)
-    //     } catch (e) {
-    //       console.log("Could not parse response data")
-    //     }
-
-    //     return response
-    //   } catch (error) {
-    //     console.error("RTK Query Fetch Error:", error)
-    //     throw error
-    //   }
-    // },
   }),
   tagTypes: ["Incident", "Ping", "Route", "User", "UserPreferences"],
   endpoints: (builder) => ({
@@ -236,7 +212,7 @@ export const api = createApi({
     // USER ENDPOINTS
     getUserById: builder.query<User, number>({
       query: (id) => ({
-        url: `/api/user/${id}`,
+        url: `/api/user/me`,
         method: "GET",
       }),
       providesTags: (result, error, id) => [{ type: "User", id }],
@@ -252,7 +228,7 @@ export const api = createApi({
 
     updateUser: builder.mutation<User, { id: number; userData: UpdateUserRequest }>({
       query: ({ id, userData }) => ({
-        url: `/api/user/update/${id}`,
+        url: `/api/user/update/me`,
         method: "PUT",
         body: userData,
       }),
@@ -261,7 +237,7 @@ export const api = createApi({
 
     deleteUser: builder.mutation<void, number>({
       query: (id) => ({
-        url: `/api/user/delete/${id}`,
+        url: `/api/user/delete/me`,
         method: "DELETE",
       }),
       invalidatesTags: (result, error, id) => [{ type: "User", id }, "User"],

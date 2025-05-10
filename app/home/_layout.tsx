@@ -23,7 +23,7 @@ export default function HomeLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="map"
         options={{
           title: "Map",
           tabBarIcon: ({ color, size }) => <Map size={size} color={color} />,
@@ -32,7 +32,7 @@ export default function HomeLayout() {
       <Tabs.Screen
         name="routes"
         options={{
-          title: "Routes",
+          title: "Historique des Routes",
           tabBarIcon: ({ color, size }) => <Pin size={size} color={color} />,
         }}
       />

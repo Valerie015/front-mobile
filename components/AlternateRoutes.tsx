@@ -70,7 +70,7 @@ const AlternateRoutes: React.FC<AlternateRoutesProps> = ({
   return (
     <View style={styles.alternateRoutesContainer}>
       <FlatList
-        data={routes.slice(0, 2)} // On force seulement les 2 premiers itinéraires
+        data={routes.slice(0, 3)} // On force seulement les 2 premiers itinéraires
         renderItem={renderAlternateRoute}
         keyExtractor={(_, index) => `route-${index}`}
         horizontal

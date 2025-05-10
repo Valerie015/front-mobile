@@ -77,7 +77,6 @@ export default function ProfileScreen() {
 
   const [showLanguageOptions, setShowLanguageOptions] = useState(false);
   const [showEditProfile, setShowEditProfile] = useState(false);
-  // const [showPreferences, setShowPreferences] = useState(false);
 
   // Récupérer le profil utilisateur au chargement
   useEffect(() => {
@@ -212,11 +211,6 @@ export default function ProfileScreen() {
           </Text>
           <Text style={[styles.userEmail, { color: colors.text }]}>
             {userProfile?.email || authUser?.email || "user@example.com"}
-          </Text>
-          <Text style={[styles.userRole, { color: colors.text }]}>
-            {userProfile?.role
-              ? t(`profile.roles.${userProfile.role.toLowerCase()}`)
-              : ""}
           </Text>
 
           <Button

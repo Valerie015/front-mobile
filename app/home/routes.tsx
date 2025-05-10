@@ -43,17 +43,6 @@ export default function RoutesScreen() {
         onCreateRoute={() => setShowRouteFormModal(true)}
       />
 
-      {/* Route Form Modal */}
-      <RouteFormModal
-        visible={showRouteFormModal}
-        onClose={() => setShowRouteFormModal(false)}
-        onSuccess={() => {
-          setShowRouteFormModal(false);
-        }}
-        userId={userId}
-        currentLocation={null}
-      />
-
       {/* Route Detail Modal */}
       <RouteDetailModal
         visible={showRouteDetailModal}

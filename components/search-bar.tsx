@@ -76,7 +76,7 @@ export default function SearchBarComponent({
               }
             }}
             query={{
-              key: "YOUR_GOOGLE_MAPS_API_KEY", // Remplacez par votre clé API Google Maps
+              key: "YOUR_GOOGLE_MAPS_API_KEY",
               language: "fr",
             }}
             fetchDetails={true}

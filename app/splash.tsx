@@ -1,4 +1,3 @@
-"use client";
 
 import { View, StyleSheet, Dimensions } from "react-native";
 import { useRouter } from "expo-router";
@@ -104,7 +103,7 @@ const AnimatedLetter = ({
         },
         (finished) => {
           if (finished && index === 5 && onComplete) {
-            // 5 est la dernière lettre d'EasyGo
+            // 5 est la dernière lettre de SupMap
             runOnJS(onComplete)();
           }
         }

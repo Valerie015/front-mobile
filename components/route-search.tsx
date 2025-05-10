@@ -65,10 +65,7 @@ export default function RouteSearch({
     }
   }, [currentLocation]);
 
-  // Charger les recherches récentes (simulé - à implémenter avec AsyncStorage)
   useEffect(() => {
-    // Ici, vous pourriez charger les recherches récentes depuis AsyncStorage
-    // Pour l'exemple, nous utilisons des données fictives
     setRecentSearches([
       { description: "Domicile", latitude: 48.8566, longitude: 2.3522 },
       { description: "Travail", latitude: 48.8738, longitude: 2.295 },

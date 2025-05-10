@@ -6,7 +6,7 @@ export default function Page() {
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
-      <Text style={{ color: colors.text }}>Welcome to the app!</Text>
+      <Text style={{ color: colors.text }}>Bienvenue sur notre application</Text>
     </View>
   );
 }

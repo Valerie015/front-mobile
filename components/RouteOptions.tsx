@@ -29,12 +29,6 @@ const RouteOptions: React.FC<RouteOptionsProps> = ({
           { value: "bicycle", label: "Vélo", icon: "bicycle" },
           { value: "pedestrian", label: "À pied", icon: "walk" },
         ]}
-        /*buttons={[
-          { value: "auto", label: "Voiture", icon: "car" },
-          { value: "motorcycle", label: "Moto", icon: "motorbike" },
-          { value: "bicycle", label: "Vélo", icon: "bicycle" },
-          { value: "pedestrian", label: "À pied", icon: "walk" },
-        ]}*/
        
         theme={{ colors: { primary: colors.primary || "#FF6200" } }}
         style={styles.segmentedButtons}

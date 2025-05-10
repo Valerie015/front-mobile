@@ -11,235 +11,194 @@
   </style>
 </head>
 <body>
-  <div id="map"></div>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script>
-    let map, userMarker, routeLayer, startMarker, endMarker, temporaryIncidentMarker, incidentMarkers = [];
-    let isTracking = false;
+<div id="map"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  let map, userMarker, routeLayer, startMarker, endMarker, temporaryIncidentMarker, incidentMarkers = [];
+  let isTracking = false;
 
-    // Initialize map
-    function initMap() {
-      map = L.map('map', {
-        zoomControl: false,
-        attributionControl: false
-      }).setView([45.759, 4.845], 13);
+  // Initialize map
+  function initMap() {
+    map = L.map('map', {
+      zoomControl: false,
+      attributionControl: false
+    }).setView([45.759, 4.845], 13);
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '© OpenStreetMap'
-      }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
 
-      // Custom icons
-      const userIcon = L.divIcon({
-        className: 'user-icon',
-        html: '<div style="background: blue; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>',
-        iconSize: [16, 16],
-        iconAnchor: [8, 8]
-      });
+    // Custom icons
+    const userIcon = L.divIcon({
+      className: 'user-icon',
+      html: '<div style="background: blue; width: 12px; height: 12px; border-radius: 50%; border: 2px solid white;"></div>',
+      iconSize: [16, 16],
+      iconAnchor: [8, 8]
+    });
 
-      userMarker = L.marker([45.759, 4.845], {
-        icon: userIcon,
-        rotationAngle: 0
-      }).addTo(map);
+    userMarker = L.marker([45.759, 4.845], {
+      icon: userIcon,
+      rotationAngle: 0
+    }).addTo(map);
 
-      // Click event for route
-      map.on('click', function(e) {
-        window.ReactNativeWebView.postMessage(JSON.stringify({
-          type: 'routeClick',
-          latitude: e.latlng.lat,
-          longitude: e.latlng.lng
-        }));
-      });
-    }
+    // Click event for route
+    map.on('click', function(e) {
+      window.ReactNativeWebView.postMessage(JSON.stringify({
+        type: 'routeClick',
+        latitude: e.latlng.lat,
+        longitude: e.latlng.lng
+      }));
+    });
+  }
 
-    // Update user location
-    function updateUserLocation(lat, lng, heading, track) {
-      if (!userMarker) return;
-      userMarker.setLatLng([lat, lng]);
-      if (heading !== null && track) {
-        userMarker.setRotationAngle(heading);
-        isTracking = true;
-        map.setView([lat, lng], map.getZoom());
-      } else if (!track) {
-        isTracking = false;
-      }
-    }
-
-    // Center map
-    function centerMap(lat, lng, zoom) {
-      map.setView([lat, lng], zoom);
-    }
-
-    // Reset rotation
-    function resetRotation() {
-      if (userMarker) {
-        userMarker.setRotationAngle(0);
-      }
+  // Update user location
+  function updateUserLocation(lat, lng, heading, track) {
+    if (!userMarker) return;
+    userMarker.setLatLng([lat, lng]);
+    if (heading !== null && heading !== undefined && track) {
+      userMarker.setRotationAngle(heading);
+      isTracking = true;
+      map.setView([lat, lng], map.getZoom());
+    } else if (!track) {
       isTracking = false;
-      map.setView(map.getCenter(), map.getZoom());
     }
+  }
 
-    // Set map type
-    function setMapType(type) {
-      let tileUrl;
-      switch(type) {
-        case 'satellite':
-          tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-          break;
-        case 'hybrid':
-          tileUrl = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-          break;
-        case 'terrain':
-          tileUrl = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
-          break;
-        default:
-          tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-      }
-      if (map) {
-        map.eachLayer(layer => {
-          if (layer instanceof L.TileLayer) {
-            map.removeLayer(layer);
-          }
-        });
-        L.tileLayer(tileUrl, {
-          maxZoom: 19,
-          attribution: type === 'terrain' ? '© OpenTopoMap' : '© OpenStreetMap'
+  // Center map
+  function centerMap(lat, lng, zoom) {
+    map.setView([lat, lng], zoom);
+  }
+
+  // Update map with route and markers
+  function updateMap(data) {
+    // Remove existing route and markers
+    if (routeLayer) map.removeLayer(routeLayer);
+    if (startMarker) map.removeLayer(startMarker);
+    if (endMarker) map.removeLayer(endMarker);
+
+    if (data.coords && data.coords.length > 0) {
+      routeLayer = L.polyline(data.coords, {
+        color: data.routeColor || '#4CAF50',
+        weight: 5,
+        opacity: 0.7
+      }).addTo(map);
+
+      if (data.start) {
+        startMarker = L.marker(data.start, {
+          icon: L.divIcon({
+            className: 'start-icon',
+            html: `<div style="background: green; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white;">${data.startLabel ? '<span style="position: absolute; left: 20px; top: -5px; background: white; padding: 2px 5px; border-radius: 3px; font-size: 12px;">${data.startLabel}</span>' : ''}</div>`,
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
+          })
         }).addTo(map);
       }
-    }
 
-    // Update map with route and markers
-    function updateMap(data) {
-      // Remove existing route and markers
-      if (routeLayer) map.removeLayer(routeLayer);
-      if (startMarker) map.removeLayer(startMarker);
-      if (endMarker) map.removeLayer(endMarker);
-
-      if (data.coords && data.coords.length > 0) {
-        routeLayer = L.polyline(data.coords, {
-          color: data.routeColor || '#4CAF50',
-          weight: 5,
-          opacity: 0.7
+      if (data.end) {
+        endMarker = L.marker(data.end, {
+          icon: L.divIcon({
+            className: 'end-icon',
+            html: `<div style="background: red; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white;">${data.endLabel ? '<span style="position: absolute; left: 20px; top: -5px; background: white; padding: 2px 5px; border-radius: 3px; font-size: 12px;">${data.endLabel}</span>' : ''}</div>`,
+            iconSize: [20, 20],
+            iconAnchor: [10, 10]
+          })
         }).addTo(map);
+      }
 
-        if (data.start) {
-          startMarker = L.marker(data.start, {
-            icon: L.divIcon({
-              className: 'start-icon',
-              html: `<div style="background: green; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white;">${data.startLabel ? '<span style="position: absolute; left: 20px; top: -5px; background: white; padding: 2px 5px; border-radius: 3px; font-size: 12px;">${data.startLabel}</span>' : ''}</div>`,
-              iconSize: [20, 20],
-              iconAnchor: [10, 10]
-            })
-          }).addTo(map);
-        }
+      map.fitBounds(routeLayer.getBounds(), { padding: [50, 50] });
 
-        if (data.end) {
-          endMarker = L.marker(data.end, {
-            icon: L.divIcon({
-              className: 'end-icon',
-              html: `<div style="background: red; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white;">${data.startLabel ? '<span style="position: absolute; left: 20px; top: -5px; background: white; padding: 2px 5px; border-radius: 3px; font-size: 12px;">${data.endLabel}</span>' : ''}</div>`,
-              iconSize: [20, 20],
-              iconAnchor: [10, 10]
-            })
-          }).addTo(map);
-        }
-
-        map.fitBounds(routeLayer.getBounds(), { padding: [50, 50] });
-
-        if (data.centerOnStart && data.start) {
-          map.setView(data.start, 15);
-        }
+      if (data.centerOnStart && data.start) {
+        map.setView(data.start, 15);
       }
     }
+  }
 
-    // Add temporary incident marker
-    function addTemporaryIncidentMarker(lat, lng) {
-      if (temporaryIncidentMarker) {
-        map.removeLayer(temporaryIncidentMarker);
-      }
-      temporaryIncidentMarker = L.marker([lat, lng], {
-        icon: L.icon({
-          iconUrl: '/assets/default.png',
-          iconSize: [32, 32],
-          iconAnchor: [16, 32]
+  // Add temporary incident marker
+  function addTemporaryIncidentMarker(lat, lng, shape, color) {
+    if (temporaryIncidentMarker) {
+      map.removeLayer(temporaryIncidentMarker);
+    }
+    temporaryIncidentMarker = L.marker([lat, lng], {
+      icon: L.divIcon({
+        className: 'incident-icon',
+        html: `<div style="border: 10px solid ${color}; border-top-color: transparent; border-right-color: transparent; transform: rotate(45deg); width: 0; height: 0;"></div>`,
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
+      })
+    }).addTo(map);
+  }
+
+  // Remove temporary incident marker
+  function removeTemporaryIncidentMarker() {
+    if (temporaryIncidentMarker) {
+      map.removeLayer(temporaryIncidentMarker);
+      temporaryIncidentMarker = null;
+    }
+  }
+
+  // Update incidents
+  function updateIncidents(incidents) {
+    // Remove existing incident markers
+    incidentMarkers.forEach(marker => map.removeLayer(marker));
+    incidentMarkers = [];
+
+    // Add new incident markers
+    incidents.forEach(incident => {
+      const marker = L.marker([incident.latitude, incident.longitude], {
+        icon: L.divIcon({
+          className: 'incident-icon',
+          html: `<div style="border: 10px solid ${incident.color}; border-top-color: transparent; border-right-color: transparent; transform: rotate(45deg); width: 0; height: 0;"></div>`,
+          iconSize: [20, 20],
+          iconAnchor: [10, 10]
         })
       }).addTo(map);
-    }
 
-    // Remove temporary incident marker
-    function removeTemporaryIncidentMarker() {
-      if (temporaryIncidentMarker) {
-        map.removeLayer(temporaryIncidentMarker);
-        temporaryIncidentMarker = null;
-      }
-    }
-
-    // Clear map
-    function clearMap() {
-      if (routeLayer) {
-        map.removeLayer(routeLayer);
-        routeLayer = null;
-      }
-      if (startMarker) {
-        map.removeLayer(startMarker);
-        startMarker = null;
-      }
-      if (endMarker) {
-        map.removeLayer(endMarker);
-        endMarker = null;
-      }
-      if (temporaryIncidentMarker) {
-        map.removeLayer(temporaryIncidentMarker);
-        temporaryIncidentMarker = null;
-      }
-      // Do not clear incidentMarkers to preserve incidents
-    }
-
-    // Update incidents
-    function updateIncidents(incidents) {
-      // Remove existing incident markers
-      incidentMarkers.forEach(marker => map.removeLayer(marker));
-      incidentMarkers = [];
-
-      // Add new incident markers
-      incidents.forEach(incident => {
-        if (incident.latitude && incident.longitude) {
-          const marker = L.marker([incident.latitude, incident.longitude], {
-            icon: L.icon({
-              iconUrl: incident.image || '/assets/default.png',
-              iconSize: [32, 32],
-              iconAnchor: [16, 32]
-            })
-          }).addTo(map);
-
-          // Add click handler for incident marker
-          marker.on('click', () => {
-            window.ReactNativeWebView.postMessage(JSON.stringify({
-              type: 'incidentClick',
-              latitude: incident.latitude,
-              longitude: incident.longitude
-            }));
-          });
-
-          incidentMarkers.push(marker);
-        }
+      // Add click handler for incident marker
+      marker.on('click', () => {
+        window.ReactNativeWebView.postMessage(JSON.stringify({
+          type: 'incidentClick',
+          latitude: incident.latitude,
+          longitude: incident.longitude
+        }));
       });
-    }
 
-    // Initialize map on load
-    document.addEventListener('DOMContentLoaded', initMap);
+      incidentMarkers.push(marker);
+    });
+  }
 
-    // Expose functions to React Native
-    window.initMap = initMap;
-    window.updateUserLocation = updateUserLocation;
-    window.centerMap = centerMap;
-    window.resetRotation = resetRotation;
-    window.setMapType = setMapType;
-    window.updateMap = updateMap;
-    window.addTemporaryIncidentMarker = addTemporaryIncidentMarker;
-    window.removeTemporaryIncidentMarker = removeTemporaryIncidentMarker;
-    window.clearMap = clearMap;
-    window.updateIncidents = updateIncidents;
-  </script>
+  // Initialize map on load
+  document.addEventListener('DOMContentLoaded', () => {
+    initMap();
+
+    // Suivi en temps réel de la position de l'utilisateur
+    navigator.geolocation.watchPosition(function(position) {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      const heading = position.coords.heading !== null ? position.coords.heading : 0;
+
+      updateUserLocation(lat, lng, heading, true); // true = tracking actif
+    }, function(error) {
+      console.error("Erreur de géolocalisation : ", error);
+    }, {
+      enableHighAccuracy: true,
+      maximumAge: 0,
+      timeout: 10000
+    });
+  });
+
+
+
+  // Expose functions to React Native
+  window.initMap = initMap;
+  window.updateUserLocation = updateUserLocation;
+  window.centerMap = centerMap;
+  window.resetRotation = resetRotation;
+  window.setMapType = setMapType;
+  window.updateMap = updateMap;
+  window.addTemporaryIncidentMarker = addTemporaryIncidentMarker;
+  window.removeTemporaryIncidentMarker = removeTemporaryIncidentMarker;
+  window.updateIncidents = updateIncidents;
+</script>
 </body>
 </html>

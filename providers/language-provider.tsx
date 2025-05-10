@@ -72,7 +72,7 @@ const translations = {
     },
     onboarding: {
       slide1: {
-        title: "Welcome to EasyGo",
+        title: "Welcome to SupMap",
         description:
           "Discover amazing features that will make your life easier",
       },
@@ -278,8 +278,6 @@ const translations = {
         personalInfo: "Personal Information",
         nameLabel: "Full Name",
         emailLabel: "Email",
-        phoneLabel: "Phone Number",
-        bioLabel: "Bio",
         nameRequired: "Name is required",
         emailRequired: "Email is required",
         emailInvalid: "Enter a valid email",
@@ -421,7 +419,7 @@ const translations = {
     },
     onboarding: {
       slide1: {
-        title: "Bienvenue sur EasyGo",
+        title: "Bienvenue sur SupMap",
         description:
           "Découvrez des fonctionnalités incroyables qui vous faciliteront la vie",
       },
@@ -632,8 +630,6 @@ const translations = {
         personalInfo: "Informations Personnelles",
         nameLabel: "Nom Complet",
         emailLabel: "Email",
-        phoneLabel: "Numéro de Téléphone",
-        bioLabel: "Biographie",
         nameRequired: "Le nom est requis",
         emailRequired: "L'email est requis",
         emailInvalid: "Entrez un email valide",
@@ -685,7 +681,7 @@ const translations = {
     },
     routes: {
       noTolls: "Éviter les péages",
-      savedRoutes: "Itinéraires enregistrés",
+      savedRoutes: "Historique des itinéraires                                                          ",
       new: "Nouveau",
       createRoute: "Créer un itinéraire",
       noRoutes: "Vous n'avez pas encore d'itinéraires enregistrés",
