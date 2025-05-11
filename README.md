@@ -27,7 +27,7 @@ Cette commande installe l’ensemble des dépendances nécessaires au bon foncti
     npx expo start
    ```
 ### Changer le .env 
-Pour savoir votre VOTRE-ADRESSE-IP regarder juste en dessous du Qrcode la premiere ligne:
+Pour savoir votre VOTRE-ADRESSE-IP regarder juste en dessous du Qrcode la première ligne:
     Metro waiting on exp://VOTRE-ADRESSE-IP:8081
 
  ```bash
