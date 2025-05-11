@@ -26,6 +26,13 @@ Cette commande installe l’ensemble des dépendances nécessaires au bon foncti
    ```bash
     npx expo start
    ```
+### Changer le .env 
+Pour savoir votre VOTRE-ADRESSE-IP regarder juste en dessous du Qrcode la premiere ligne:
+    Metro waiting on exp://VOTRE-ADRESSE-IP:8081
+
+ ```bash
+    API_URL=http://VOTRE-ADRESSE-IP
+   ```
 
 ## 🔗 Dépendances principales
 
