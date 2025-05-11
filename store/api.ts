@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import type { RootState } from "@/store"
-import { API_BASE_URL } from '@env';
+import Constants from 'expo-constants';
 
 // Define Incident types
 export interface Incident {
@@ -170,13 +170,13 @@ export interface UpdateUserPreferencesRequest {
   avoidHighways: boolean
   distanceUnit: string
 }
-
+const { API_URL } = Constants.expoConfig.extra;
 // Define the API
 export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     // Utiliser l'adresse IP correcte au lieu de localhost
-    baseUrl: API_BASE_URL,
+    baseUrl: API_URL,
     prepareHeaders: (headers, { getState }) => {
       // Ajouter seulement les en-têtes essentiels
       headers.set("Content-Type", "application/json")
