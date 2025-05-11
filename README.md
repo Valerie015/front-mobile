@@ -7,7 +7,7 @@ Ce dépôt contient l’interface utilisateur de SupMap, une application de navi
 1. Cloner ce dépot :
 
 ```bash
-git clone
+git clone https://github.com/Valerie015/front-mobile.git
 cd front-mobile
 ```
 
@@ -39,8 +39,3 @@ Ce front-end communique avec les microservices suivants :
 * Utilisateurs (User Service)
 * Itinéraires (Route Service)
 * Incidents (Incident Service)
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
