@@ -176,7 +176,7 @@ export const api = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     // Utiliser l'adresse IP correcte au lieu de localhost
-    baseUrl: API_URL,
+    baseUrl:API_URL,
     prepareHeaders: (headers, { getState }) => {
       // Ajouter seulement les en-têtes essentiels
       headers.set("Content-Type", "application/json")

@@ -126,7 +126,9 @@
         startMarker = L.marker(data.start, {
           icon: L.divIcon({
             className: 'start-icon',
-            html: `<div style="background: green; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white;">${data.startLabel ? '<span style="position: absolute; left: 20px; top: -5px; background: white; padding: 2px 5px; border-radius: 3px; font-size: 12px;">${data.startLabel}</span>' : ''}</div>`,
+            html: `<div style="background: green; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white; position: relative;">
+              ${data.startLabel ? `<span style="position: absolute; left: 20px; top: -5px; background: white; padding: 2px 5px; border-radius: 3px; font-size: 12px;"></span>` : ''}
+            </div>`,
             iconSize: [20, 20],
             iconAnchor: [10, 10]
           })
@@ -137,7 +139,9 @@
         endMarker = L.marker(data.end, {
           icon: L.divIcon({
             className: 'end-icon',
-            html: `<div style="background: red; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white;">${data.startLabel ? '<span style="position: absolute; left: 20px; top: -5px; background: white; padding: 2px 5px; border-radius: 3px; font-size: 12px;">${data.endLabel}</span>' : ''}</div>`,
+            html: `<div style="background: red; width: 16px; height: 16px; border-radius: 50%; border: 2px solid white; position: relative;">
+              ${data.endLabel ? `<span style="position: absolute; left: 20px; top: -5px; background: white; padding: 2px 5px; border-radius: 3px; font-size: 12px;"></span>` : ''}
+            </div>`,
             iconSize: [20, 20],
             iconAnchor: [10, 10]
           })
@@ -151,6 +155,7 @@
       }
     }
   }
+
 
   // Add temporary incident marker
   function addTemporaryIncidentMarker(lat, lng) {

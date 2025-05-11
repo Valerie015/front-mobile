@@ -326,7 +326,7 @@ const translations = {
     },
     routes: {
       noTolls: "Avoid tolls",
-      savedRoutes: "Saved Routes",
+      savedRoutes: "Saved Routes                                                            ",
       new: "New",
       createRoute: "Create Route",
       noRoutes: "You don't have any saved routes yet",

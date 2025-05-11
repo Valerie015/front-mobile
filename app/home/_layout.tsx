@@ -25,7 +25,7 @@ export default function HomeLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Map",
+          title: "Carte",
           tabBarIcon: ({ color, size }) => <Map size={size} color={color} />,
         }}
       />

@@ -193,7 +193,7 @@ const MapView: React.FC<MapViewProps> = ({
         `);
       }
     } else {
-      // Clear map when no route is present
+
       webViewRef.current.injectJavaScript(`
         window.clearMap();
         window.centerMap(${queryLocation.latitude}, ${queryLocation.longitude}, 13);
