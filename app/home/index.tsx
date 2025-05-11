@@ -130,22 +130,22 @@ const RouteMap: React.FC = () => {
     }
   }, [serverIncidents]);
 
-  const LYON_BOUNDS = {
-    southWest: { latitude: 45.65, longitude: 4.7 },
-    northEast: { latitude: 45.85, longitude: 5.0 },
+  const REGION_BOUNDS = {
+        southWest: { latitude: 44.0, longitude: 3.0 },
+      northEast: { latitude: 46.5, longitude: 7.0 },
   };
 
-  const DEFAULT_LYON_LOCATION: LatLng = {
-    latitude: 45.759,
-    longitude: 4.845,
+  const DEFAULT_REGION_LOCATION: LatLng = {
+    latitude: 45.5,
+    longitude: 4.5,
   };
 
-  const isWithinLyon = (location: LatLng): boolean => {
+  const isWithinRegion = (location: LatLng): boolean => {
     return (
-      location.latitude >= LYON_BOUNDS.southWest.latitude &&
-      location.latitude <= LYON_BOUNDS.northEast.latitude &&
-      location.longitude >= LYON_BOUNDS.southWest.longitude &&
-      location.longitude <= LYON_BOUNDS.northEast.longitude
+      location.latitude >= REGION_BOUNDS.southWest.latitude &&
+      location.latitude <= REGION_BOUNDS.northEast.latitude &&
+      location.longitude >= REGION_BOUNDS.southWest.longitude &&
+      location.longitude <= REGION_BOUNDS.northEast.longitude
     );
   };
 
@@ -289,7 +289,7 @@ const RouteMap: React.FC = () => {
             return;
           }
 
-          if (isWithinLyon(clickedLocation)) {
+          if (isWithinRegion(clickedLocation)) {
             setIncidentLocation(clickedLocation);
             setShowIncidentModal(true);
           } else {
@@ -329,7 +329,7 @@ const RouteMap: React.FC = () => {
       return;
     }
 
-    if (!isWithinLyon(reportLocation)) {
+    if (!isWithinRegion(reportLocation)) {
       showSnackbar("L'incident doit être dans Lyon");
       return;
     }
@@ -419,7 +419,7 @@ const RouteMap: React.FC = () => {
         const filteredData = data.filter((result) => {
           const lat = parseFloat(result.lat);
           const lon = parseFloat(result.lon);
-          return isWithinLyon({ latitude: lat, longitude: lon });
+          return isWithinRegion({ latitude: lat, longitude: lon });
         });
 
         cacheResults(query, filteredData);
@@ -451,7 +451,7 @@ const RouteMap: React.FC = () => {
         longitude: parseFloat(result.lon),
       };
 
-      if (!isWithinLyon(selectedLoc)) {
+      if (!isWithinRegion(selectedLoc)) {
         showSnackbar(
           `Lieu hors des limites de Lyon: lat=${selectedLoc.latitude}, lon=${selectedLoc.longitude}`
         );
@@ -504,7 +504,7 @@ const RouteMap: React.FC = () => {
         return;
       }
 
-      if (!isWithinLyon(location)) {
+      if (!isWithinRegion(location)) {
         showSnackbar(
           `Lieu hors des limites de Lyon: lat=${location.latitude}, lon=${location.longitude}`
         );
@@ -607,7 +607,7 @@ const RouteMap: React.FC = () => {
           })
         );
 
-        const validCoords = decoded.filter((coord) => isWithinLyon(coord));
+        const validCoords = decoded.filter((coord) => isWithinRegion(coord));
         if (validCoords.length === 0) {
           throw new Error("No valid coordinates within Lyon bounds");
         }
@@ -666,7 +666,7 @@ const RouteMap: React.FC = () => {
         })
       );
 
-      const validCoords = decoded.filter((coord) => isWithinLyon(coord));
+      const validCoords = decoded.filter((coord) => isWithinRegion(coord));
       if (validCoords.length === 0) {
         showSnackbar("Coordonnées de trajet invalides");
         return;
@@ -734,9 +734,9 @@ const RouteMap: React.FC = () => {
   const centerMapOnUserLocation = (withHeading: boolean) => {
     if (!location) return;
 
-    const displayLocation = isWithinLyon(location)
+    const displayLocation = isWithinRegion(location)
       ? location
-      : DEFAULT_LYON_LOCATION;
+      : DEFAULT_REGION_LOCATION;
 
     if (withHeading && heading !== null) {
       setIsMapRotated(true);

@@ -77,6 +77,8 @@ export default function SearchBarComponent({
             }}
             query={{
               key: "YOUR_GOOGLE_MAPS_API_KEY",
+              location: "45.5,4.5",
+              radius: 150000,
               language: "fr",
             }}
             fetchDetails={true}
