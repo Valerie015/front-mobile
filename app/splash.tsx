@@ -260,7 +260,7 @@ export default function SplashScreen() {
         <Animated.Text
           style={[styles.tagline, taglineStyle, { color: colors.text }]}
         >
-          Navigate with ease
+          Naviguer avec SupMap
         </Animated.Text>
       </Animated.View>
     </View>
